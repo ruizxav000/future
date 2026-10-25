@@ -54,7 +54,7 @@ export const STAGES = [
     letterbox: false,
     audio: 'disk',
     title: 'Doppler beaming',
-    body: 'Near its inner edge, gas in the accretion disk orbits at about half the speed of light. Light from the side moving toward you is shifted to higher frequencies and concentrated forward, so that side looks brighter and bluer. The receding side looks dimmer and redder. Interstellar left this effect out. Select Cinematic to compare.',
+    body: 'Near its inner edge, gas in the accretion disk orbits at about half the speed of light. Light from the side moving toward you is shifted to higher frequencies and concentrated forward, so that side looks brighter and bluer. The receding side looks dimmer and redder. Select Cinematic to see the disk without this effect.',
   },
   {
     id: 'photon',
