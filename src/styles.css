@@ -127,7 +127,9 @@ button {
   left: var(--gutter);
   right: var(--gutter);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  /* The chapter stays centred while there's room; when there isn't, the side
+     columns keep their content's width and the chapter slides off-centre. */
+  grid-template-columns: minmax(max-content, 1fr) auto minmax(max-content, 1fr);
   align-items: start;
   gap: 16px;
 }
@@ -625,9 +627,8 @@ button:focus-visible {
 
 /* ------------------------------------------------------------ smaller windows */
 
-@media (max-width: 1040px) {
-  /* The narration card already names the chapter. */
-  .chapter {
+@media (max-width: 900px) {
+  .pips {
     display: none;
   }
 }
@@ -660,17 +661,18 @@ button:focus-visible {
     display: none;
   }
 
+  /* Brand and chapter share the first line; telemetry spans the next. */
   .topbar {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: auto minmax(0, 1fr);
     gap: 10px;
   }
 
-  .brand,
-  .telemetry {
-    grid-column: 1;
+  .chapter {
+    justify-self: end;
   }
 
   .telemetry {
+    grid-column: 1 / -1;
     justify-self: stretch;
     width: auto;
     padding: 10px 16px;

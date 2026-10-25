@@ -81,7 +81,6 @@ function boot() {
     const s = STAGES[index];
     $('chapter-num').textContent = s.chapter;
     $('chapter-name').textContent = s.name;
-    $('narr-label').textContent = `${s.chapter} — ${s.name}`;
     $('proceed-label').textContent = s.proceedLabel || 'Proceed';
     measureProceed();
     [...$('pips').children].forEach((pip, i) => pip.classList.toggle('on', i < index));
