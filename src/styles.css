@@ -324,41 +324,38 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 44px;
 }
 
-/* The intro's card and Begin button only take clicks while they're showing. */
+/* The intro's title and Begin button only take clicks while they're showing. */
 .state-intro:not(.ui-hidden) .intro > * {
   pointer-events: auto;
 }
 
-.intro-card {
-  width: min(460px, 86vw);
-  padding: 34px 38px 30px;
-  border-radius: 34px;
+/* A title card straight on the sky: no glass, so it reads like a film title. */
+.intro-title {
   text-align: center;
-}
-
-.eyebrow {
-  margin: 0 0 14px;
-  font-family: var(--label);
-  font-size: 10.5px;
-  font-weight: 500;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--warm);
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.7);
 }
 
 .intro h1 {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
   margin: 0;
   font-weight: 200;
-  font-size: 54px;
+  font-size: 50px;
   letter-spacing: 0.3em;
   margin-right: -0.3em;
   line-height: 1;
+}
+
+.credit {
+  margin: 22px 0 0;
+  font-family: var(--label);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  margin-right: -0.32em;
+  text-transform: uppercase;
+  color: var(--dim);
 }
 
 .begin {
@@ -429,7 +426,7 @@ kbd {
   min-height: 1.25em;
 }
 
-.narration p:not(.eyebrow) {
+.narration p {
   margin: 0;
   font-size: 14.5px;
   line-height: 1.6;
@@ -643,7 +640,7 @@ button:focus-visible {
     padding: 3px 0;
   }
 
-  .narration p:not(.eyebrow) {
+  .narration p {
     min-height: 0;
   }
 }
@@ -698,7 +695,15 @@ button:focus-visible {
   }
 
   .intro h1 {
-    font-size: 40px;
+    font-size: 26px;
+    letter-spacing: 0.22em;
+    margin-right: -0.22em;
+  }
+
+  .credit {
+    font-size: 9.5px;
+    letter-spacing: 0.24em;
+    margin-right: -0.24em;
   }
 }
 
