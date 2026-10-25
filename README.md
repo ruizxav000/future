@@ -1,4 +1,4 @@
-# FUTURE — a look into
+# Twin Paradox
 
 A first-person, guided journey to a black hole, ray traced live in the browser.
 

@@ -137,13 +137,6 @@ button {
   font-weight: 600;
 }
 
-.brand i {
-  font-style: normal;
-  color: var(--dim);
-  letter-spacing: 0.12em;
-  text-transform: lowercase;
-}
-
 .brand-mark {
   width: 14px;
   height: 14px;
@@ -347,19 +340,15 @@ button {
 }
 
 .intro h1 {
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 0 22px;
   font-weight: 200;
-  font-size: 64px;
-  letter-spacing: 0.34em;
-  margin-right: -0.34em;
-  line-height: 1;
-}
-
-.intro .sub {
-  margin: 10px 0 20px;
-  font-size: 13px;
+  font-size: 54px;
   letter-spacing: 0.3em;
-  color: var(--dim);
+  margin-right: -0.3em;
+  line-height: 1;
 }
 
 .intro .lede {
@@ -650,7 +639,7 @@ button:focus-visible {
   }
 
   .intro h1 {
-    font-size: 44px;
+    font-size: 40px;
   }
 }
 

@@ -21,7 +21,7 @@ const markup = source
   .trim();
 const importMap = { imports: { three: `${THREE}build/three.module.js`, 'three/': THREE } };
 
-const page = `<title>Future</title>
+const page = `<title>Twin Paradox</title>
 <meta name="description" content="A first-person journey to a black hole, ray traced live in your browser." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
