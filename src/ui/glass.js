@@ -126,23 +126,30 @@ export class GlassLayer {
 }
 
 /**
- * Below 1 a side draws in toward the drop and then shrinks away; above 1
- * (spring overshoot) it bulges a little past its resting size.
+ * Maps a spring position to a half-size. Near 0 a small drop forms quickly;
+ * from there the size follows the spring directly (no easing of its own, which
+ * would add a pause and then a snap). Above 1, spring overshoot bulges the
+ * side a little past its resting size.
  */
 function side(half, drop, s) {
   if (s >= 1) return half * (1 + (s - 1) * 0.5);
-  const t = 1 - Math.max(0, s);
-  return (half + (drop - half) * smoothstep(0, 0.75, t)) * (1 - smoothstep(0.6, 1, t));
+  const p = Math.max(0, s);
+  const spread = Math.min(1, Math.max(0, (p - 0.05) / 0.95));
+  return (drop + (half - drop) * spread) * smoothstep(0, 0.15, p);
 }
 
 function dropShape(w, h, radius, { x, y }) {
   const drop = Math.min(DROP_RADIUS, w, h);
   const least = Math.min(x, y);
+  const hx = side(w, drop, x);
+  const hy = side(h, drop, y);
+  // Corners round off as the panel gathers, so the drop is round; they blend
+  // gradually from fully round to the resting radius as it opens.
+  const round = Math.min(1, Math.max(0, (1 - least) / 0.6));
   return {
-    hx: side(w, drop, x),
-    hy: side(h, drop, y),
-    // Corners round off as the panel gathers, so the drop is round.
-    radius: radius + (1e4 - radius) * smoothstep(0, 0.5, 1 - Math.min(1, least)),
+    hx,
+    hy,
+    radius: radius + (Math.max(radius, Math.min(hx, hy)) - radius) * round,
     // The glass stays solid while it gathers, so the drop reads as a drop.
     glass: smoothstep(0, 0.35, Math.max(0, (x + y) / 2)),
     text: smoothstep(0.35, 0.9, least),
