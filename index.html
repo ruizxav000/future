@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Future — a look into</title>
+    <meta name="description" content="A first-person journey to a black hole, ray traced live in your browser." />
+    <meta name="theme-color" content="#000000" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='black'/%3E%3Cellipse cx='32' cy='33' rx='28' ry='5' fill='%23ffb35c'/%3E%3Ccircle cx='32' cy='32' r='14' fill='none' stroke='%23ffd9a1' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='12' fill='black'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body class="state-intro">
+    <canvas id="gl" aria-hidden="true"></canvas>
+
+    <main id="ui">
+      <div class="brand glass" data-glass>
+        <span class="brand-mark" aria-hidden="true"></span>
+        <b>FUTURE</b>
+        <i>a look into</i>
+      </div>
+
+      <div class="chapter glass story-only" data-glass aria-live="polite">
+        <span class="chapter-num" id="chapter-num">00</span>
+        <span class="chapter-name" id="chapter-name">Standby</span>
+        <span class="pips" id="pips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+      </div>
+
+      <aside class="telemetry glass story-only" data-glass aria-label="Telemetry">
+        <h2>Telemetry</h2>
+        <dl>
+          <div class="row"><dt>Radius</dt><dd data-t="radius">—</dd></div>
+          <div class="row"><dt>Above horizon</dt><dd data-t="altitude">—</dd></div>
+          <div class="row"><dt>Time dilation</dt><dd data-t="dilation">—</dd></div>
+          <div class="meter" data-t="meter" aria-hidden="true">
+            <span class="track"><span class="fill"></span></span>
+            <span class="scale"><i>1</i><i>10</i><i>10²</i><i>10³</i><i>10⁴</i><i>10⁵</i></span>
+          </div>
+          <div class="row"><dt>Starlight blueshift</dt><dd data-t="blueshift">—</dd></div>
+          <div class="row"><dt>Ship clock</dt><dd data-t="ship">—</dd></div>
+          <div class="row earth" data-t="earth-row"><dt>Earth clock</dt><dd data-t="earth">—</dd></div>
+        </dl>
+        <p class="note" data-t="per-second"></p>
+        <p class="render" data-t="render"></p>
+      </aside>
+
+      <section class="intro intro-only" id="intro">
+        <div class="intro-card glass" data-glass>
+          <p class="eyebrow">Proof of concept · 01</p>
+          <h1>FUTURE</h1>
+          <p class="sub">a look into</p>
+          <p class="lede">A black hole, rendered live. Every pixel on this screen is a ray of light, traced backwards through curved spacetime.</p>
+        </div>
+        <button class="begin glass" id="begin" data-glass>Begin</button>
+        <p class="hint">Desktop · Sound on · <kbd>Space</kbd> to proceed</p>
+      </section>
+
+      <section class="narration is-out" id="narration" aria-live="polite">
+        <div class="narration-card glass" data-glass>
+          <p class="eyebrow" id="narr-label"></p>
+          <h2 id="narr-title"></h2>
+          <p id="narr-body"></p>
+        </div>
+        <button class="proceed glass" id="proceed" data-glass>
+          <span id="proceed-label">Proceed</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+        </button>
+      </section>
+
+      <div class="controls glass" data-glass>
+        <div class="seg" role="group" aria-label="Doppler beaming">
+          <span class="label">Doppler</span>
+          <button type="button" data-doppler="1" aria-pressed="true">Physical</button>
+          <button type="button" data-doppler="0" aria-pressed="false">Cinematic</button>
+        </div>
+        <button type="button" class="toggle" id="sound" role="switch" aria-checked="true">Sound <b>On</b></button>
+        <span class="keys"><kbd>H</kbd> hide interface</span>
+      </div>
+    </main>
+
+    <div id="fallback" hidden>
+      <h1>FUTURE</h1>
+      <p>This experience ray traces a black hole in real time and needs a desktop browser with WebGL 2.</p>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

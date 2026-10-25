@@ -1,0 +1,551 @@
+:root {
+  --ink: #eef2f7;
+  --dim: rgba(238, 242, 247, 0.58);
+  --faint: rgba(238, 242, 247, 0.32);
+  --warm: #ffc98a;
+  --cool: #a9cbff;
+  --bar: 0px;
+  --gutter: 28px;
+  --sans: 'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  cursor: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: none;
+}
+
+#gl {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+
+#ui {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+#ui > * {
+  pointer-events: auto;
+}
+
+/* The glass itself is drawn on the GPU (see composite.frag.glsl); these
+   elements only carry content, shape and hit area. */
+.glass {
+  background: transparent;
+  border: 0;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
+}
+
+.no-gl .glass {
+  background: rgba(16, 18, 24, 0.55);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+/* ------------------------------------------------------------ visibility */
+
+.story-only,
+.intro-only,
+.narration,
+.brand,
+.controls {
+  transition:
+    opacity 0.9s var(--ease),
+    transform 0.9s var(--ease);
+}
+
+.state-intro .story-only,
+.state-story .intro-only,
+.narration.is-out {
+  opacity: 0;
+  transform: translateY(10px) scale(0.97);
+  pointer-events: none;
+}
+
+.state-story .story-only {
+  transition-delay: 0.6s;
+}
+
+.ui-hidden #ui > * {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* ------------------------------------------------------------ brand */
+
+.brand {
+  position: absolute;
+  top: calc(var(--bar) + var(--gutter));
+  left: var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px 10px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.32em;
+}
+
+.brand b {
+  font-weight: 600;
+}
+
+.brand i {
+  font-style: normal;
+  color: var(--dim);
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+}
+
+.brand-mark {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #000;
+  box-shadow:
+    0 0 0 1.5px var(--warm),
+    0 0 10px 1px rgba(255, 190, 120, 0.6);
+}
+
+/* ------------------------------------------------------------ chapter */
+
+.chapter {
+  position: absolute;
+  top: calc(var(--bar) + var(--gutter));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.state-intro .chapter {
+  transform: translateX(-50%) translateY(10px) scale(0.97);
+}
+
+.chapter-num {
+  color: var(--warm);
+}
+
+.pips {
+  display: flex;
+  gap: 5px;
+  margin-left: 4px;
+}
+
+.pips i {
+  width: 14px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--faint);
+  transition: background 0.6s;
+}
+
+.pips i.on {
+  background: var(--ink);
+}
+
+/* ------------------------------------------------------------ telemetry */
+
+.telemetry {
+  position: absolute;
+  top: calc(var(--bar) + var(--gutter));
+  right: var(--gutter);
+  width: 312px;
+  padding: 18px 20px 14px;
+  border-radius: 24px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+}
+
+.telemetry h2 {
+  margin: 0 0 12px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.telemetry dl {
+  margin: 0;
+}
+
+.telemetry .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 5px 0;
+}
+
+.telemetry dt {
+  color: var(--dim);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.telemetry dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.telemetry .earth dd {
+  transition: color 0.8s;
+}
+
+.telemetry .earth.flash dd {
+  animation: flash 0.9s var(--ease);
+}
+
+@keyframes flash {
+  0% {
+    color: #fff;
+    text-shadow: 0 0 14px rgba(169, 203, 255, 0.9);
+  }
+  100% {
+    color: var(--ink);
+  }
+}
+
+.meter {
+  padding: 4px 0 8px;
+  --fill: 0;
+}
+
+.meter .track {
+  display: block;
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.meter .fill {
+  display: block;
+  height: 100%;
+  width: calc(var(--fill) * 100%);
+  min-width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--warm), #fff 60%, var(--cool));
+  box-shadow: 0 0 10px rgba(169, 203, 255, 0.6);
+  transition: width 0.15s linear;
+}
+
+.meter .scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+  font-size: 9px;
+  color: var(--faint);
+}
+
+.meter .scale i {
+  font-style: normal;
+}
+
+.telemetry .note {
+  margin: 2px 0 0;
+  color: var(--cool);
+  font-size: 10.5px;
+  text-align: right;
+}
+
+.telemetry .render {
+  margin: 12px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--faint);
+}
+
+/* ------------------------------------------------------------ intro */
+
+.intro {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  pointer-events: none;
+}
+
+.intro > * {
+  pointer-events: auto;
+}
+
+.intro-card {
+  width: min(460px, 86vw);
+  padding: 34px 38px 30px;
+  border-radius: 34px;
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0 0 14px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--warm);
+}
+
+.intro h1 {
+  margin: 0;
+  font-weight: 200;
+  font-size: 64px;
+  letter-spacing: 0.34em;
+  margin-right: -0.34em;
+  line-height: 1;
+}
+
+.intro .sub {
+  margin: 10px 0 20px;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  color: var(--dim);
+}
+
+.intro .lede {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: rgba(238, 242, 247, 0.8);
+}
+
+.begin {
+  padding: 14px 46px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  transition: transform 0.5s var(--ease);
+}
+
+.begin:hover,
+.begin:focus-visible,
+.proceed:hover,
+.proceed:focus-visible {
+  transform: scale(1.06);
+}
+
+.hint {
+  margin: 4px 0 0;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+kbd {
+  font-family: var(--mono);
+  font-size: 0.95em;
+  padding: 1px 6px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: var(--dim);
+}
+
+/* ------------------------------------------------------------ narration */
+
+.narration {
+  position: absolute;
+  left: var(--gutter);
+  bottom: calc(var(--bar) + var(--gutter));
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.narration-card {
+  width: min(540px, 44vw);
+  padding: 22px 26px 24px;
+  border-radius: 28px;
+}
+
+.narration h2 {
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 1.25;
+  min-height: 1.25em;
+}
+
+.narration p:not(.eyebrow) {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: rgba(238, 242, 247, 0.82);
+  min-height: 4.8em;
+}
+
+.proceed {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 22px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    transform 0.5s var(--ease),
+    opacity 0.5s;
+}
+
+.proceed svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.proceed.waiting {
+  opacity: 0.35;
+}
+
+/* ------------------------------------------------------------ controls */
+
+.controls {
+  position: absolute;
+  right: var(--gutter);
+  bottom: calc(var(--bar) + var(--gutter));
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 7px 16px 7px 8px;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.seg {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.seg .label {
+  padding: 0 8px 0 10px;
+  color: var(--dim);
+}
+
+.seg button,
+.toggle {
+  padding: 7px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--dim);
+  transition:
+    background 0.4s,
+    color 0.4s;
+}
+
+.seg button[aria-pressed='true'] {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--ink);
+}
+
+.toggle b {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.keys {
+  color: var(--faint);
+}
+
+button:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 3px;
+}
+
+/* ------------------------------------------------------------ fallback */
+
+#fallback {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  cursor: auto;
+}
+
+#fallback[hidden] {
+  display: none;
+}
+
+#fallback h1 {
+  font-weight: 200;
+  letter-spacing: 0.34em;
+}
+
+#fallback p {
+  color: var(--dim);
+  max-width: 420px;
+  line-height: 1.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-only,
+  .intro-only,
+  .narration,
+  .brand,
+  .controls {
+    transition-duration: 0.01s;
+  }
+}
