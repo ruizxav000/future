@@ -20,10 +20,8 @@
           <b>TWIN PARADOX</b>
         </button>
 
-        <div class="chapter glass story-only" data-glass aria-live="polite">
-          <span class="chapter-num" id="chapter-num">00</span>
-          <span class="chapter-name" id="chapter-name">Standby</span>
-          <span class="pips" id="pips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        <div class="chapter glass story-only" id="progress" data-glass role="img" aria-label="Progress">
+          <span class="pips" id="pips"><i></i><i></i><i></i><i></i><i></i></span>
         </div>
 
         <aside class="telemetry glass story-only" data-glass aria-label="Telemetry">
@@ -56,6 +54,7 @@
       <footer class="dock">
         <section class="narration is-out" id="narration" aria-live="polite">
           <div class="narration-card glass" data-glass>
+            <p class="eyebrow" id="narr-label"></p>
             <h2 id="narr-title"></h2>
             <p id="narr-body"></p>
           </div>

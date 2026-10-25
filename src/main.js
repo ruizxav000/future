@@ -79,11 +79,14 @@ function boot() {
 
   function setStageUI(index) {
     const s = STAGES[index];
-    $('chapter-num').textContent = s.chapter;
-    $('chapter-name').textContent = s.name;
+    $('narr-label').textContent = `${s.chapter} — ${s.name}`;
+    $('progress').setAttribute('aria-label', `Part ${index} of ${STAGES.length - 1}`);
     $('proceed-label').textContent = s.proceedLabel || 'Proceed';
     measureProceed();
-    [...$('pips').children].forEach((pip, i) => pip.classList.toggle('on', i < index));
+    [...$('pips').children].forEach((pip, i) => {
+      pip.classList.toggle('on', i < index);
+      pip.classList.toggle('current', i === index - 1);
+    });
   }
 
   function speak(index) {
