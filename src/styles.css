@@ -10,6 +10,7 @@
   --label: 'Sora Variable', 'Sora', var(--sans);
   --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --spring: cubic-bezier(0.34, 1.45, 0.64, 1);
   color-scheme: dark;
 }
 
@@ -370,8 +371,8 @@ button {
 
 .begin:hover,
 .begin:focus-visible,
-.proceed:hover,
-.proceed:focus-visible {
+.proceed:not(.waiting):hover,
+.proceed:not(.waiting):focus-visible {
   transform: scale(1.06);
 }
 
@@ -435,13 +436,23 @@ kbd {
 }
 
 /* Proceed floats free of the narration card: the extra margin keeps their
-   glass from fusing. It can still merge with the controls when squeezed. */
+   glass from fusing. It can still merge with the controls when squeezed.
+
+   While the narration is still typing it waits as a small empty bubble, then
+   springs open into the full pill. --full-width is measured in main.js so
+   the width can animate (auto widths can't). */
 .proceed {
+  flex: none;
   margin-left: 28px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
-  padding: 15px 22px;
+  --pad-x: 22px;
+  width: var(--full-width, auto);
+  height: 46px;
+  padding: 0 var(--pad-x);
+  overflow: hidden;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 500;
@@ -449,8 +460,31 @@ kbd {
   text-transform: uppercase;
   white-space: nowrap;
   transition:
+    width 0.75s var(--spring),
+    height 0.75s var(--spring),
+    padding 0.75s var(--spring),
+    margin 0.75s var(--spring),
     transform 0.5s var(--ease),
     opacity 0.5s;
+}
+
+.proceed > * {
+  flex: none;
+  transition: opacity 0.4s 0.25s;
+}
+
+.proceed.waiting {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  /* Keep the bubble centred on where the pill will be. */
+  margin-bottom: 12px;
+}
+
+.proceed.waiting > * {
+  opacity: 0;
+  transition-delay: 0s;
+  transition-duration: 0.15s;
 }
 
 .proceed svg {
@@ -461,10 +495,6 @@ kbd {
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;
-}
-
-.proceed.waiting {
-  opacity: 0.35;
 }
 
 /* ------------------------------------------------------------ controls */

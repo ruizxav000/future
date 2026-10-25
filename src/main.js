@@ -65,12 +65,25 @@ function boot() {
 
   // ---------------------------------------------------------- story flow
 
+  // The open pill's width, so it can animate open from the waiting bubble.
+  function measureProceed() {
+    // Layout widths, not bounding boxes: the button may be mid-scale.
+    const style = getComputedStyle(proceedBtn);
+    const parts = [...proceedBtn.children];
+    const content = parts.reduce((w, el) => w + (el.offsetWidth ?? parseFloat(getComputedStyle(el).width)), 0);
+    const gaps = parseFloat(style.columnGap) * (parts.length - 1);
+    const pad = 2 * parseFloat(style.getPropertyValue('--pad-x'));
+    proceedBtn.style.setProperty('--full-width', `${Math.ceil(content + gaps + pad)}px`);
+  }
+  document.fonts?.ready.then(measureProceed);
+
   function setStageUI(index) {
     const s = STAGES[index];
     $('chapter-num').textContent = s.chapter;
     $('chapter-name').textContent = s.name;
     $('narr-label').textContent = `${s.chapter} — ${s.name}`;
     $('proceed-label').textContent = s.proceedLabel || 'Proceed';
+    measureProceed();
     [...$('pips').children].forEach((pip, i) => pip.classList.toggle('on', i < index));
   }
 
