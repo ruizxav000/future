@@ -91,8 +91,10 @@ float glassField(vec2 p, out float alpha) {
     if (i >= uPanelCount) break;
     vec4 pr = uPanels[i];
     float a = uPanelAlpha[i];
-    // Fading panels shrink inward, so they drain away like liquid instead of popping.
-    float di = sdRoundBox(p - pr.xy, pr.zw, uPanelRadius[i]) + (1.0 - a) * min(pr.z, pr.w);
+    // Fading panels fade at the same rate as their text and shrink only a
+    // little, so the glass and its contents stay in step.
+    float s = 1.0 - 0.04 * (1.0 - a);
+    float di = sdRoundBox(p - pr.xy, pr.zw * s, uPanelRadius[i] * s);
     d = smin(d, di, k);
     if (di < best) { best = di; alpha = a; }
   }
