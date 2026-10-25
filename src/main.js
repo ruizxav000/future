@@ -298,5 +298,5 @@ function boot() {
   requestAnimationFrame(frame);
 
   // For debugging in the console.
-  window.future = { pipeline, director, clock, audio, cursor, go };
+  window.future = { pipeline, director, clock, audio, cursor, glass, go };
 }
