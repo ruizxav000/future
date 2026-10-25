@@ -86,8 +86,10 @@ button {
 .narration,
 .brand,
 .controls {
+  /* Opacity drives the glass drop shape (see GlassLayer), so it runs at a
+     steady rate; an eased curve would gather the drop early and then stall. */
   transition:
-    opacity 0.9s var(--ease),
+    opacity 0.9s linear,
     transform 0.9s var(--ease);
 }
 
@@ -464,7 +466,7 @@ kbd {
     padding 0.75s var(--spring),
     margin 0.75s var(--spring),
     transform 0.5s var(--ease),
-    opacity 0.5s;
+    opacity 0.5s linear;
 }
 
 .proceed > * {
