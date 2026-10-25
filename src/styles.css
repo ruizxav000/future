@@ -365,6 +365,20 @@ button {
   text-shadow: none;
 }
 
+/* A flickering glyph drawn over its character without changing its width. */
+.flicker {
+  position: relative;
+}
+
+.flicker::after {
+  content: attr(data-glyph);
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  color: rgba(238, 242, 247, 0.8);
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
