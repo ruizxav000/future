@@ -37,8 +37,8 @@ button {
 #gl {
   position: fixed;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: block;
 }
 
@@ -538,6 +538,61 @@ button:focus-visible {
   color: var(--dim);
   max-width: 420px;
   line-height: 1.6;
+}
+
+/* ------------------------------------------------------------ narrow screens */
+
+/* Built for desktop; on a phone the panels stack so nothing overlaps. */
+@media (max-width: 760px) {
+  :root {
+    --gutter: 16px;
+  }
+
+  .chapter,
+  .keys,
+  .telemetry h2,
+  .meter,
+  .telemetry .render {
+    display: none;
+  }
+
+  .telemetry {
+    left: var(--gutter);
+    right: var(--gutter);
+    top: calc(var(--bar) + 76px);
+    width: auto;
+    padding: 10px 16px;
+  }
+
+  .telemetry .row {
+    padding: 3px 0;
+  }
+
+  .narration {
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: calc(var(--bar) + 80px);
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .narration-card {
+    width: auto;
+  }
+
+  .proceed {
+    align-self: flex-end;
+  }
+
+  .controls {
+    left: var(--gutter);
+    right: var(--gutter);
+    justify-content: space-between;
+  }
+
+  .intro h1 {
+    font-size: 44px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
