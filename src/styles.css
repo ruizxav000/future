@@ -412,15 +412,6 @@ button {
   transform: scale(1.06);
 }
 
-.hint {
-  margin: 4px 0 0;
-  font-family: var(--label);
-  font-size: 10.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--faint);
-}
-
 kbd {
   font-family: var(--label);
   font-size: 0.95em;

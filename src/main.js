@@ -49,7 +49,7 @@ function boot() {
   const hud = new Hud(document.querySelector('.telemetry'));
   const narrator = new Narrator($('narr-title'), $('narr-body'));
   const introLede = $('intro-lede');
-  const introNarrator = new Narrator(null, introLede, { reserve: true });
+  const introNarrator = new Narrator(null, introLede, { reserve: true, speed: 0.5 });
 
   const narration = $('narration');
   const proceedBtn = $('proceed');

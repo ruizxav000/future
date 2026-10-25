@@ -11,11 +11,12 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
  * re-centre the line.
  */
 export class Narrator {
-  constructor(titleEl, bodyEl, { reserve = false } = {}) {
+  constructor(titleEl, bodyEl, { reserve = false, speed = 1 } = {}) {
     // A narrator without a title line writes its title into a detached node.
     this.titleEl = titleEl ?? document.createElement('span');
     this.bodyEl = bodyEl;
     this.reserve = reserve;
+    this.speed = speed;
     this.queue = null;
     this.done = true;
     this.onTick = null;
@@ -46,8 +47,10 @@ export class Narrator {
     if (!q || this.done) return;
     q.t += dt;
     const t = Math.max(0, q.t);
-    const titleChars = q.t < 0 ? -1 : t * 38;
-    const bodyChars = q.t < 0 ? -1 : Math.max(-1, (t - q.title.length / 38 - 0.25) * 62);
+    const titleRate = 38 * this.speed;
+    const bodyRate = 62 * this.speed;
+    const titleChars = q.t < 0 ? -1 : t * titleRate;
+    const bodyChars = q.t < 0 ? -1 : Math.max(-1, (t - q.title.length / titleRate - 0.25) * bodyRate);
     const shown = this.titleEl.textContent.length + this.bodyEl.textContent.length;
     if (this.reserve) {
       placeInLayout(this.titleEl, q.title, titleChars);
