@@ -351,48 +351,12 @@ button {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin: 0 0 22px;
+  margin: 0;
   font-weight: 200;
   font-size: 54px;
   letter-spacing: 0.3em;
   margin-right: -0.3em;
   line-height: 1;
-}
-
-/* Untyped text keeps its place in the layout but isn't visible yet. */
-.pending {
-  color: transparent;
-  text-shadow: none;
-}
-
-/* A flickering glyph drawn over its character without changing its width. */
-.flicker {
-  position: relative;
-}
-
-.flicker::after {
-  content: attr(data-glyph);
-  position: absolute;
-  left: 50%;
-  top: 0;
-  transform: translateX(-50%);
-  color: rgba(238, 242, 247, 0.8);
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
-.intro .lede {
-  margin: 0;
-  font-size: 14.5px;
-  line-height: 1.6;
-  color: rgba(238, 242, 247, 0.8);
 }
 
 .begin {
