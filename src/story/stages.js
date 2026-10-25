@@ -18,9 +18,7 @@ export const STAGES = [
     incl: 9,
     phi: -0.55,
     look: 0,
-    // Tilted down so the hole sits above the title, like a poster; the
-    // approach then tilts up into it.
-    pitch: -0.21,
+    pitch: 0,
     drift: 0.004,
     travel: 0,
     letterbox: true,
