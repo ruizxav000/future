@@ -16,10 +16,9 @@
 
     <main id="ui">
       <header class="topbar">
-        <div class="brand glass story-only" data-glass>
-          <span class="brand-mark" aria-hidden="true"></span>
+        <button type="button" class="brand glass story-only" id="home" data-glass aria-label="Twin Paradox, back to the start">
           <b>TWIN PARADOX</b>
-        </div>
+        </button>
 
         <div class="chapter glass story-only" data-glass aria-live="polite">
           <span class="chapter-num" id="chapter-num">00</span>
@@ -61,11 +60,12 @@
             <h2 id="narr-title"></h2>
             <p id="narr-body"></p>
           </div>
-          <button class="proceed glass" id="proceed" data-glass>
-            <span id="proceed-label">Proceed</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
-          </button>
         </section>
+
+        <button class="proceed glass" id="proceed" data-glass>
+          <span id="proceed-label">Proceed</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+        </button>
 
         <div class="controls glass story-only" data-glass>
           <div class="seg" role="group" aria-label="Doppler beaming">

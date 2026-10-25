@@ -55,9 +55,11 @@ button {
   pointer-events: auto;
 }
 
-/* The top and bottom rows are layout only; clicks pass through the gaps. */
+/* The top and bottom rows, and the full-screen intro layer, are layout only;
+   clicks pass through their empty space. */
 #ui > .topbar,
-#ui > .dock {
+#ui > .dock,
+#ui > .intro {
   pointer-events: none;
 }
 
@@ -90,7 +92,8 @@ button {
 
 .state-intro .story-only,
 .state-story .intro-only,
-.narration.is-out {
+.narration.is-out,
+.narration.is-out + .proceed {
   opacity: 0;
   transform: translateY(10px) scale(0.97);
   pointer-events: none;
@@ -108,6 +111,7 @@ button {
 .ui-hidden .telemetry,
 .ui-hidden .intro,
 .ui-hidden .narration,
+.ui-hidden .proceed,
 .ui-hidden .controls {
   opacity: 0 !important;
   pointer-events: none !important;
@@ -134,8 +138,7 @@ button {
   justify-self: start;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 16px 10px 12px;
+  padding: 10px 18px;
   border-radius: 999px;
   font-size: 12px;
   letter-spacing: 0.32em;
@@ -145,14 +148,10 @@ button {
   font-weight: 600;
 }
 
-.brand-mark {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #000;
-  box-shadow:
-    0 0 0 1.5px var(--warm),
-    0 0 10px 1px rgba(255, 190, 120, 0.6);
+/* The brand pill is the way home. */
+.state-story .brand:hover,
+.state-story .brand:focus-visible {
+  transform: scale(1.05);
 }
 
 /* ------------------------------------------------------------ chapter */
@@ -323,10 +322,10 @@ button {
   align-items: center;
   justify-content: center;
   gap: 14px;
-  pointer-events: none;
 }
 
-.intro > * {
+/* The intro's card and Begin button only take clicks while they're showing. */
+.state-intro:not(.ui-hidden) .intro > * {
   pointer-events: auto;
 }
 
@@ -406,15 +405,14 @@ kbd {
 /* ------------------------------------------------------------ narration */
 
 .narration {
-  flex: 0 1 auto;
+  flex: 0 1 540px;
+  min-width: 380px;
   display: flex;
-  align-items: flex-end;
-  gap: 12px;
 }
 
 .narration-card {
-  flex: 0 1 540px;
-  min-width: 380px;
+  flex: 1 1 auto;
+  min-width: 0;
   padding: 22px 26px 24px;
   border-radius: 28px;
 }
@@ -436,7 +434,10 @@ kbd {
   min-height: 4.8em;
 }
 
+/* Proceed floats free of the narration card: the extra margin keeps their
+   glass from fusing. It can still merge with the controls when squeezed. */
 .proceed {
+  margin-left: 28px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -651,17 +652,11 @@ button:focus-visible {
 
   .narration {
     flex: 1 1 100%;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .narration-card {
-    flex: none;
     min-width: 0;
   }
 
   .proceed {
-    align-self: flex-end;
+    margin-left: auto;
   }
 
   .controls {
@@ -679,6 +674,7 @@ button:focus-visible {
   .story-only,
   .intro-only,
   .narration,
+  .proceed,
   .brand,
   .controls {
     transition-duration: 0.01s;

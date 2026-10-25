@@ -122,6 +122,24 @@ function boot() {
     }, 1600);
   }
 
+  // Back to the title card: fade out, reset the journey, fade the intro in.
+  function home() {
+    if (!started || fadeTarget === 0) return;
+    audio.blip(440);
+    fadeTarget = 0;
+    narration.classList.add('is-out');
+    pendingNarration = null;
+    setTimeout(() => {
+      started = false;
+      body.classList.replace('state-story', 'state-intro');
+      director.goTo(0, { instant: true });
+      clock.reset();
+      audio.setMode('idle');
+      letterboxTarget = 1;
+      fadeTarget = 1;
+    }, 1400);
+  }
+
   function proceed() {
     if (!started) return begin();
     if (director.moving || fadeTarget === 0) return;
@@ -135,6 +153,7 @@ function boot() {
   // ---------------------------------------------------------- controls
 
   $('begin').addEventListener('click', begin);
+  $('home').addEventListener('click', home);
   proceedBtn.addEventListener('click', proceed);
 
   document.querySelectorAll('[data-doppler]').forEach((btn) => {
