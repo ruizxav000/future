@@ -5,8 +5,8 @@ import { MAX_PANELS } from '../render/pipeline.js';
  * position, size, corner radius and opacity. The DOM keeps the text and the
  * hit-testing; the GPU draws the glass.
  *
- * While a panel fades, the shader drains its glass inward. The panel's own
- * content is clipped to the same shrinking shape so the two stay in step.
+ * While a panel fades, the shader gathers its glass into a drop. The panel's
+ * own content is clipped to the same shape so the two stay in step.
  */
 export class GlassLayer {
   constructor(uniforms) {
@@ -47,11 +47,31 @@ export class GlassLayer {
   }
 }
 
-// Same inset as the shader: (1 - alpha) of the smaller half-size.
+const DROP_RADIUS = 14; // CSS px; keep in sync with composite.frag.glsl
+
+const smoothstep = (a, b, x) => {
+  const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
+  return t * t * (3 - 2 * t);
+};
+
+// The same drop shape as the shader, as a clip on the panel's content.
 function drainContent(entry, alpha, radius) {
   const { el } = entry;
-  const inset = ((1 - alpha) * Math.min(el.offsetWidth, el.offsetHeight)) / 2;
-  const clip = alpha > 0.995 ? '' : `inset(${inset.toFixed(1)}px round ${radius}px)`;
+  const t = 1 - alpha;
+  const w = el.offsetWidth / 2;
+  const h = el.offsetHeight / 2;
+  const drop = Math.min(DROP_RADIUS, w, h);
+  const gather = smoothstep(0, 0.75, t);
+  const vanish = 1 - smoothstep(0.6, 1, t);
+  const hx = (w + (drop - w) * gather) * vanish;
+  const hy = (h + (drop - h) * gather) * vanish;
+  const round = radius + (1e4 - radius) * smoothstep(0, 0.5, t);
+  // Keep the text inside the glass's bright rim, which sits just inside its edge.
+  const rim = 6 * smoothstep(0, 0.15, t);
+  const clip =
+    alpha > 0.995
+      ? ''
+      : `inset(${(h - hy + rim).toFixed(1)}px ${(w - hx + rim).toFixed(1)}px round ${round.toFixed(0)}px)`;
   if (clip !== entry.clip) {
     el.style.clipPath = clip;
     entry.clip = clip;
