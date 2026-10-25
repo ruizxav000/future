@@ -23,6 +23,16 @@ export function dilation(rm1) {
   return 1 / lapse(rm1);
 }
 
+/**
+ * Proper (ruler) distance from the horizon to radius 1 + rm1, measured along
+ * a radial line by static observers, in Schwarzschild radii:
+ *   integral of dr / sqrt(1 - 1/r) = sqrt(r (r - 1)) + asinh(sqrt(r - 1)).
+ * Near the horizon this is about 2 sqrt(rm1), far larger than rm1 itself.
+ */
+export function properDistance(rm1) {
+  return Math.sqrt(rm1 * (1 + rm1)) + Math.asinh(Math.sqrt(rm1));
+}
+
 /** The radius (as r - 1) where the dilation factor equals `gamma`. */
 export function rm1ForDilation(gamma) {
   return 1 / (gamma * gamma - 1);
@@ -106,8 +116,8 @@ export function formatRadius(rm1) {
   return `1.${grouped} Rs`;
 }
 
-export function formatAltitude(rm1) {
-  const km = rm1 * RS_KM;
+export function formatDistance(rs) {
+  const km = rs * RS_KM;
   if (km < 1) return `${(km * 1000).toFixed(1)} m`;
   if (km < 1e6) return `${Math.round(km).toLocaleString('en-US')} km`;
   const exp = Math.floor(Math.log10(km));

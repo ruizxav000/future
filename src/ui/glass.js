@@ -7,9 +7,11 @@ const DROP_RADIUS = 14;
  * Width and height each ride their own underdamped spring, like the cursor
  * droplet. Width is a little stiffer, so a panel spreads sideways slightly
  * ahead of growing tall and wobbles as it settles, the way liquid does.
- * Hiding uses softer springs so the gathering drop has time to be seen.
+ * Showing is unhurried (about 0.45s to open, 1.3s to settle, 6% overshoot);
+ * hiding is quicker, but still slow enough for the gathering drop to be seen.
  */
-const SHOW = { x: { k: 190, c: 16 }, y: { k: 140, c: 14 } };
+const spring = (k, zeta) => ({ k, c: 2 * zeta * Math.sqrt(k) });
+const SHOW = { x: spring(31, 0.66), y: spring(23, 0.66) };
 const HIDE = { x: { k: 85, c: 11 }, y: { k: 65, c: 10 } };
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');

@@ -2,7 +2,8 @@ import {
   formatShip,
   formatEarth,
   formatRadius,
-  formatAltitude,
+  formatDistance,
+  properDistance,
   formatDilation,
 } from '../physics/relativity.js';
 
@@ -12,7 +13,7 @@ export class Hud {
     const q = (sel) => root.querySelector(sel);
     this.el = {
       radius: q('[data-t="radius"]'),
-      altitude: q('[data-t="altitude"]'),
+      distance: q('[data-t="distance"]'),
       dilation: q('[data-t="dilation"]'),
       meter: q('[data-t="meter"]'),
       blueshift: q('[data-t="blueshift"]'),
@@ -42,7 +43,7 @@ export class Hud {
     const g = clock.gamma;
     const e = this.el;
     e.radius.textContent = formatRadius(rm1);
-    e.altitude.textContent = formatAltitude(rm1);
+    e.distance.textContent = formatDistance(properDistance(rm1));
     e.dilation.textContent = `γ ${formatDilation(g)}`;
     e.meter.style.setProperty('--fill', Math.min(1, Math.log10(g) / 5).toFixed(4));
     e.blueshift.textContent = `×${formatDilation(g)}`;
