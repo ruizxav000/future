@@ -7,6 +7,7 @@
   --bar: 0px;
   --gutter: 28px;
   --sans: 'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --label: 'Sora Variable', 'Sora', var(--sans);
   --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   color-scheme: dark;
@@ -48,8 +49,16 @@ button {
   pointer-events: none;
 }
 
-#ui > * {
+#ui > *,
+.topbar > *,
+.dock > * {
   pointer-events: auto;
+}
+
+/* The top and bottom rows are layout only; clicks pass through the gaps. */
+#ui > .topbar,
+#ui > .dock {
+  pointer-events: none;
 }
 
 /* The glass itself is drawn on the GPU (see composite.frag.glsl); these
@@ -96,12 +105,25 @@ button {
   pointer-events: none !important;
 }
 
-/* ------------------------------------------------------------ brand */
+/* ------------------------------------------------------------ top row */
 
-.brand {
+/* Brand, chapter and telemetry share one grid so they can never overlap. */
+.topbar {
   position: absolute;
   top: calc(var(--bar) + var(--gutter));
   left: var(--gutter);
+  right: var(--gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: start;
+  gap: 16px;
+}
+
+/* ------------------------------------------------------------ brand */
+
+.brand {
+  grid-column: 1;
+  justify-self: start;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -135,27 +157,23 @@ button {
 /* ------------------------------------------------------------ chapter */
 
 .chapter {
-  position: absolute;
-  top: calc(var(--bar) + var(--gutter));
-  left: 50%;
-  transform: translateX(-50%);
+  grid-column: 2;
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 10px 18px;
   border-radius: 999px;
-  font-family: var(--mono);
-  font-size: 11.5px;
-  letter-spacing: 0.18em;
+  font-family: var(--label);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-}
-
-.state-intro .chapter {
-  transform: translateX(-50%) translateY(10px) scale(0.97);
+  white-space: nowrap;
 }
 
 .chapter-num {
   color: var(--warm);
+  font-variant-numeric: tabular-nums;
 }
 
 .pips {
@@ -179,9 +197,8 @@ button {
 /* ------------------------------------------------------------ telemetry */
 
 .telemetry {
-  position: absolute;
-  top: calc(var(--bar) + var(--gutter));
-  right: var(--gutter);
+  grid-column: 3;
+  justify-self: end;
   width: 312px;
   padding: 18px 20px 14px;
   border-radius: 24px;
@@ -321,9 +338,10 @@ button {
 
 .eyebrow {
   margin: 0 0 14px;
-  font-family: var(--mono);
+  font-family: var(--label);
   font-size: 10.5px;
-  letter-spacing: 0.26em;
+  font-weight: 500;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--warm);
 }
@@ -370,7 +388,7 @@ button {
 
 .hint {
   margin: 4px 0 0;
-  font-family: var(--mono);
+  font-family: var(--label);
   font-size: 10.5px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -378,7 +396,7 @@ button {
 }
 
 kbd {
-  font-family: var(--mono);
+  font-family: var(--label);
   font-size: 0.95em;
   padding: 1px 6px;
   border-radius: 5px;
@@ -386,19 +404,37 @@ kbd {
   color: var(--dim);
 }
 
+/* ------------------------------------------------------------ bottom row */
+
+/* Narration and controls share one wrapping row: when the window is too
+   narrow for both, the controls drop to their own line instead of sliding
+   under the narration. */
+.dock {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: calc(var(--bar) + var(--gutter));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px 24px;
+}
+
 /* ------------------------------------------------------------ narration */
 
 .narration {
-  position: absolute;
-  left: var(--gutter);
-  bottom: calc(var(--bar) + var(--gutter));
+  flex: 0 1 auto;
+  min-width: 0;
   display: flex;
   align-items: flex-end;
   gap: 12px;
 }
 
 .narration-card {
-  width: min(540px, 44vw);
+  flex: 0 1 auto;
+  width: 540px;
+  max-width: 100%;
+  min-width: 0;
   padding: 22px 26px 24px;
   border-radius: 28px;
 }
@@ -453,16 +489,16 @@ kbd {
 /* ------------------------------------------------------------ controls */
 
 .controls {
-  position: absolute;
-  right: var(--gutter);
-  bottom: calc(var(--bar) + var(--gutter));
+  margin-left: auto;
   display: flex;
   align-items: center;
   gap: 14px;
   padding: 7px 16px 7px 8px;
   border-radius: 999px;
-  font-family: var(--mono);
-  font-size: 10.5px;
+  font-family: var(--label);
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -540,15 +576,36 @@ button:focus-visible {
   line-height: 1.6;
 }
 
-/* ------------------------------------------------------------ narrow screens */
+/* ------------------------------------------------------------ smaller windows */
 
-/* Built for desktop; on a phone the panels stack so nothing overlaps. */
+@media (max-width: 1040px) {
+  /* The narration card already names the chapter. */
+  .chapter {
+    display: none;
+  }
+}
+
+@media (max-height: 760px) {
+  .meter,
+  .telemetry .render {
+    display: none;
+  }
+
+  .telemetry .row {
+    padding: 3px 0;
+  }
+
+  .narration p:not(.eyebrow) {
+    min-height: 0;
+  }
+}
+
+/* Built for desktop; on a phone everything stacks so nothing overlaps. */
 @media (max-width: 760px) {
   :root {
     --gutter: 16px;
   }
 
-  .chapter,
   .keys,
   .telemetry h2,
   .meter,
@@ -556,22 +613,24 @@ button:focus-visible {
     display: none;
   }
 
+  .topbar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .brand,
   .telemetry {
-    left: var(--gutter);
-    right: var(--gutter);
-    top: calc(var(--bar) + 76px);
+    grid-column: 1;
+  }
+
+  .telemetry {
+    justify-self: stretch;
     width: auto;
     padding: 10px 16px;
   }
 
-  .telemetry .row {
-    padding: 3px 0;
-  }
-
   .narration {
-    left: var(--gutter);
-    right: var(--gutter);
-    bottom: calc(var(--bar) + 80px);
+    flex: 1 1 100%;
     flex-direction: column;
     align-items: stretch;
   }
@@ -585,8 +644,8 @@ button:focus-visible {
   }
 
   .controls {
-    left: var(--gutter);
-    right: var(--gutter);
+    margin-left: 0;
+    flex: 1 1 100%;
     justify-content: space-between;
   }
 

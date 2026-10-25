@@ -15,35 +15,37 @@
     <canvas id="gl" aria-hidden="true"></canvas>
 
     <main id="ui">
-      <div class="brand glass" data-glass>
-        <span class="brand-mark" aria-hidden="true"></span>
-        <b>FUTURE</b>
-        <i>a look into</i>
-      </div>
+      <header class="topbar">
+        <div class="brand glass" data-glass>
+          <span class="brand-mark" aria-hidden="true"></span>
+          <b>FUTURE</b>
+          <i>a look into</i>
+        </div>
 
-      <div class="chapter glass story-only" data-glass aria-live="polite">
-        <span class="chapter-num" id="chapter-num">00</span>
-        <span class="chapter-name" id="chapter-name">Standby</span>
-        <span class="pips" id="pips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
-      </div>
+        <div class="chapter glass story-only" data-glass aria-live="polite">
+          <span class="chapter-num" id="chapter-num">00</span>
+          <span class="chapter-name" id="chapter-name">Standby</span>
+          <span class="pips" id="pips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        </div>
 
-      <aside class="telemetry glass story-only" data-glass aria-label="Telemetry">
-        <h2>Telemetry</h2>
-        <dl>
-          <div class="row"><dt>Radius</dt><dd data-t="radius">—</dd></div>
-          <div class="row"><dt>Above horizon</dt><dd data-t="altitude">—</dd></div>
-          <div class="row"><dt>Time dilation</dt><dd data-t="dilation">—</dd></div>
-          <div class="meter" data-t="meter" aria-hidden="true">
-            <span class="track"><span class="fill"></span></span>
-            <span class="scale"><i>1</i><i>10</i><i>10²</i><i>10³</i><i>10⁴</i><i>10⁵</i></span>
-          </div>
-          <div class="row"><dt>Starlight blueshift</dt><dd data-t="blueshift">—</dd></div>
-          <div class="row"><dt>Ship clock</dt><dd data-t="ship">—</dd></div>
-          <div class="row earth" data-t="earth-row"><dt>Earth clock</dt><dd data-t="earth">—</dd></div>
-        </dl>
-        <p class="note" data-t="per-second"></p>
-        <p class="render" data-t="render"></p>
-      </aside>
+        <aside class="telemetry glass story-only" data-glass aria-label="Telemetry">
+          <h2>Telemetry</h2>
+          <dl>
+            <div class="row"><dt>Radius</dt><dd data-t="radius">—</dd></div>
+            <div class="row"><dt>Above horizon</dt><dd data-t="altitude">—</dd></div>
+            <div class="row"><dt>Time dilation</dt><dd data-t="dilation">—</dd></div>
+            <div class="meter" data-t="meter" aria-hidden="true">
+              <span class="track"><span class="fill"></span></span>
+              <span class="scale"><i>1</i><i>10</i><i>10²</i><i>10³</i><i>10⁴</i><i>10⁵</i></span>
+            </div>
+            <div class="row"><dt>Starlight blueshift</dt><dd data-t="blueshift">—</dd></div>
+            <div class="row"><dt>Ship clock</dt><dd data-t="ship">—</dd></div>
+            <div class="row earth" data-t="earth-row"><dt>Earth clock</dt><dd data-t="earth">—</dd></div>
+          </dl>
+          <p class="note" data-t="per-second"></p>
+          <p class="render" data-t="render"></p>
+        </aside>
+      </header>
 
       <section class="intro intro-only" id="intro">
         <div class="intro-card glass" data-glass>
@@ -56,27 +58,29 @@
         <p class="hint">Desktop · Sound on · <kbd>Space</kbd> to proceed</p>
       </section>
 
-      <section class="narration is-out" id="narration" aria-live="polite">
-        <div class="narration-card glass" data-glass>
-          <p class="eyebrow" id="narr-label"></p>
-          <h2 id="narr-title"></h2>
-          <p id="narr-body"></p>
-        </div>
-        <button class="proceed glass" id="proceed" data-glass>
-          <span id="proceed-label">Proceed</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
-        </button>
-      </section>
+      <footer class="dock">
+        <section class="narration is-out" id="narration" aria-live="polite">
+          <div class="narration-card glass" data-glass>
+            <p class="eyebrow" id="narr-label"></p>
+            <h2 id="narr-title"></h2>
+            <p id="narr-body"></p>
+          </div>
+          <button class="proceed glass" id="proceed" data-glass>
+            <span id="proceed-label">Proceed</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" /></svg>
+          </button>
+        </section>
 
-      <div class="controls glass" data-glass>
-        <div class="seg" role="group" aria-label="Doppler beaming">
-          <span class="label">Doppler</span>
-          <button type="button" data-doppler="1" aria-pressed="true">Physical</button>
-          <button type="button" data-doppler="0" aria-pressed="false">Cinematic</button>
+        <div class="controls glass" data-glass>
+          <div class="seg" role="group" aria-label="Doppler beaming">
+            <span class="label">Doppler</span>
+            <button type="button" data-doppler="1" aria-pressed="true">Physical</button>
+            <button type="button" data-doppler="0" aria-pressed="false">Cinematic</button>
+          </div>
+          <button type="button" class="toggle" id="sound" role="switch" aria-checked="true">Sound <b>On</b></button>
+          <span class="keys"><kbd>H</kbd> hide interface</span>
         </div>
-        <button type="button" class="toggle" id="sound" role="switch" aria-checked="true">Sound <b>On</b></button>
-        <span class="keys"><kbd>H</kbd> hide interface</span>
-      </div>
+      </footer>
     </main>
 
     <div id="fallback" hidden>

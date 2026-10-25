@@ -5,7 +5,7 @@ import { join } from 'node:path';
 
 const THREE = 'https://cdn.jsdelivr.net/npm/three@0.186.1/';
 const FONTS =
-  'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@200..600&display=swap';
+  'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@200..600&family=Sora:wght@300..600&display=swap';
 
 await build({ configFile: 'vite.artifact.config.js', logLevel: 'warn' });
 
