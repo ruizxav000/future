@@ -359,6 +359,21 @@ button {
   line-height: 1;
 }
 
+/* Untyped text keeps its place in the layout but isn't visible yet. */
+.pending {
+  color: transparent;
+  text-shadow: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .intro .lede {
   margin: 0;
   font-size: 14.5px;

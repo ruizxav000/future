@@ -48,6 +48,8 @@ function boot() {
   const cursor = new Cursor();
   const hud = new Hud(document.querySelector('.telemetry'));
   const narrator = new Narrator($('narr-title'), $('narr-body'));
+  const introLede = $('intro-lede');
+  const introNarrator = new Narrator(null, introLede, { reserve: true });
 
   const narration = $('narration');
   const proceedBtn = $('proceed');
@@ -190,6 +192,9 @@ function boot() {
   }
   if (params.get('ui') === '0') body.classList.add('ui-hidden');
 
+  // The intro line transmits in like the narration, once the stars have faded up.
+  if (!started) introNarrator.say('', introLede.textContent, { delay: 0.9 });
+
   // ---------------------------------------------------------- frame loop
 
   let last = performance.now();
@@ -216,6 +221,7 @@ function boot() {
       pendingNarration = null;
     }
     narrator.update(dt);
+    introNarrator.update(dt);
     proceedBtn.classList.toggle('waiting', director.moving || !narrator.done);
 
     // Smoothed state.
