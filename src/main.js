@@ -106,6 +106,8 @@ function boot() {
     audio.blip(660);
     clock.reset();
     body.classList.replace('state-intro', 'state-story');
+    body.classList.add('entering');
+    setTimeout(() => body.classList.remove('entering'), 2000);
     go(1);
   }
 
