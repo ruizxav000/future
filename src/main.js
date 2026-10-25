@@ -1,7 +1,7 @@
 import '@fontsource-variable/inter';
 import '@fontsource-variable/sora';
-import '@fontsource/ibm-plex-mono/400.css';
-import '@fontsource/ibm-plex-mono/500.css';
+import '@fontsource/geist-mono/400.css';
+import '@fontsource/geist-mono/500.css';
 import './styles.css';
 
 import { Pipeline } from './render/pipeline.js';
