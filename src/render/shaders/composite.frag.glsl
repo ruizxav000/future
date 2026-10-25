@@ -9,7 +9,6 @@
 precision highp float;
 
 #define MAX_PANELS 14
-#define DROP_RADIUS 14.0   // CSS px; keep in sync with ui/glass.js
 
 varying vec2 vUv;
 
@@ -24,6 +23,7 @@ uniform vec2 uLight;           // direction of the glass key light
 
 uniform int uPanelCount;
 uniform vec4 uPanels[MAX_PANELS];    // centre.xy, half-size.xy (pixels, origin bottom-left)
+                                     // The shape is animated in ui/glass.js.
 uniform float uPanelRadius[MAX_PANELS];
 uniform float uPanelAlpha[MAX_PANELS];
 
@@ -92,14 +92,7 @@ float glassField(vec2 p, out float alpha) {
     if (i >= uPanelCount) break;
     vec4 pr = uPanels[i];
     float a = uPanelAlpha[i];
-    // A fading panel gathers into a drop, the way liquid pulls itself round:
-    // the shape draws in toward a small circle at its centre, then the drop
-    // shrinks away. GlassLayer clips the panel's content to the same shape.
-    float t = 1.0 - a;
-    float drop = min(DROP_RADIUS * uDpr, min(pr.z, pr.w));
-    vec2 halfSize = mix(pr.zw, vec2(drop), smoothstep(0.0, 0.75, t)) * (1.0 - smoothstep(0.6, 1.0, t));
-    float radius = mix(uPanelRadius[i], 1e4, smoothstep(0.0, 0.5, t));
-    float di = sdRoundBox(p - pr.xy, halfSize, radius);
+    float di = sdRoundBox(p - pr.xy, pr.zw, uPanelRadius[i]);
     d = smin(d, di, k);
     if (di < best) { best = di; alpha = a; }
   }
@@ -163,8 +156,7 @@ void main() {
     // Hairline edge.
     g += smoothstep(1.6 * uDpr, 0.0, abs(d + 0.9 * uDpr)) * 0.16;
 
-    // The glass stays solid while it gathers, so the drop reads as a drop.
-    float mask = smoothstep(0.75, -0.75, d) * smoothstep(0.0, 0.35, alpha);
+    float mask = smoothstep(0.75, -0.75, d) * alpha;
     col = mix(col, g, mask);
   }
 

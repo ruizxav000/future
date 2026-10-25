@@ -284,7 +284,7 @@ function boot() {
     const ly = 0.83 + cursor.normalized.y * 0.2;
     const ll = Math.hypot(lx, ly);
     U.uLight.value.set(lx / ll, ly / ll);
-    glass.update(dpr, h);
+    glass.update(dt, dpr, h);
     cursor.writeUniforms(U, dpr, h);
 
     hud.update(dt, { rm1: cam.rm1, clock, scale: pipeline.scale, steps: B.uMaxSteps.value });
