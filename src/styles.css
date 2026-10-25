@@ -423,35 +423,34 @@ kbd {
 
 /* ------------------------------------------------------------ bottom row */
 
-/* Narration and controls share one wrapping row: when the window is too
-   narrow for both, the controls drop to their own line instead of sliding
-   under the narration. */
+/* Narration and controls share one row and push each other instead of
+   overlapping. As the window narrows the narration card gives up width
+   first; after that the controls are pushed off the right edge, losing
+   their last items (Hide interface, then Sound). When the two meet, the
+   gap is small enough for their glass to merge. */
 .dock {
   position: absolute;
   left: var(--gutter);
   right: var(--gutter);
   bottom: calc(var(--bar) + var(--gutter));
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: flex-end;
-  gap: 14px 24px;
+  gap: 6px;
 }
 
 /* ------------------------------------------------------------ narration */
 
 .narration {
   flex: 0 1 auto;
-  min-width: 0;
   display: flex;
   align-items: flex-end;
   gap: 12px;
 }
 
 .narration-card {
-  flex: 0 1 auto;
-  width: 540px;
-  max-width: 100%;
-  min-width: 0;
+  flex: 0 1 540px;
+  min-width: 380px;
   padding: 22px 26px 24px;
   border-radius: 28px;
 }
@@ -506,6 +505,7 @@ kbd {
 /* ------------------------------------------------------------ controls */
 
 .controls {
+  flex: none;
   margin-left: auto;
   display: flex;
   align-items: center;
@@ -681,6 +681,10 @@ button:focus-visible {
     padding: 10px 16px;
   }
 
+  .dock {
+    flex-wrap: wrap;
+  }
+
   .narration {
     flex: 1 1 100%;
     flex-direction: column;
@@ -688,7 +692,8 @@ button:focus-visible {
   }
 
   .narration-card {
-    width: auto;
+    flex: none;
+    min-width: 0;
   }
 
   .proceed {
