@@ -45,7 +45,7 @@ function boot() {
   const clock = new MissionClock();
   const audio = new AudioEngine();
   const glass = new GlassLayer(U);
-  const cursor = new Cursor($('cursor-layer'));
+  const cursor = new Cursor();
   const hud = new Hud(document.querySelector('.telemetry'));
   const narrator = new Narrator($('narr-title'), $('narr-body'));
 
@@ -234,8 +234,6 @@ function boot() {
     const dt = Math.min(rawMs / 1000, 0.1);
     time += dt;
 
-    // On the title screen the cursor floats above the title text.
-    cursor.setOnTop(!started);
     cursor.update(dt);
     const cam = director.update(dt, time, cursor.normalized);
 
