@@ -13,6 +13,7 @@ import { GlassLayer } from './ui/glass.js';
 import { Cursor } from './ui/cursor.js';
 import { Narrator } from './ui/narrator.js';
 import { Hud } from './ui/hud.js';
+import { TitleLayer } from './ui/title.js';
 
 const IMAX_ASPECT = 2.39;
 const params = new URLSearchParams(location.search);
@@ -46,6 +47,7 @@ function boot() {
   const audio = new AudioEngine();
   const glass = new GlassLayer(U);
   const cursor = new Cursor();
+  const title = new TitleLayer($('intro-title'), U);
   const hud = new Hud(document.querySelector('.telemetry'));
   const narrator = new Narrator($('narr-title'), $('narr-body'));
 
@@ -288,6 +290,7 @@ function boot() {
     const ll = Math.hypot(lx, ly);
     U.uLight.value.set(lx / ll, ly / ll);
     glass.update(dt, dpr, h);
+    title.update(dpr);
     cursor.writeUniforms(U, dpr, h);
 
     hud.update(dt, { rm1: cam.rm1, clock, scale: pipeline.scale, steps: B.uMaxSteps.value });
@@ -301,5 +304,5 @@ function boot() {
   requestAnimationFrame(frame);
 
   // For debugging in the console.
-  window.future = { pipeline, director, clock, audio, cursor, glass, go };
+  window.future = { pipeline, director, clock, audio, cursor, glass, title, go };
 }

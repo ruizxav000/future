@@ -13,6 +13,8 @@ precision highp float;
 varying vec2 vUv;
 
 uniform sampler2D tScene;
+uniform sampler2D tTitle;      // title-screen text, drawn beneath the glass
+uniform float uTitleAlpha;
 uniform vec2 uResolution;      // drawing-buffer pixels
 uniform float uDpr;
 uniform float uTime;
@@ -37,9 +39,20 @@ vec3 aces(vec3 x) {
   return clamp((x * (2.51 * x + 0.03)) / (x * (2.43 * x + 0.59) + 0.14), 0.0, 1.0);
 }
 
+// The rendered scene alone.
+vec3 backdrop(vec2 px) {
+  vec2 uv = clamp(px / uResolution, 0.0, 1.0);
+  return pow(aces(texture2D(tScene, uv).rgb * uExposure), vec3(1.0 / 2.2));
+}
+
+// What glass sees through itself: the scene with the title-screen text on it.
 vec3 sceneAt(vec2 px) {
-  vec3 hdr = texture2D(tScene, clamp(px / uResolution, 0.0, 1.0)).rgb;
-  return pow(aces(hdr * uExposure), vec3(1.0 / 2.2));
+  vec3 col = backdrop(px);
+  if (uTitleAlpha > 0.0) {
+    vec4 title = texture2D(tTitle, clamp(px / uResolution, 0.0, 1.0));
+    col = mix(col, title.rgb, title.a * uTitleAlpha);
+  }
+  return col;
 }
 
 vec3 frosted(vec2 px, float radius) {
@@ -108,7 +121,8 @@ float glassFieldOnly(vec2 p) {
 
 void main() {
   vec2 px = vUv * uResolution;
-  vec3 col = sceneAt(px);
+  vec3 col = backdrop(px);
+  float glassCover = 0.0;
 
   float alpha;
   float d = glassField(px, alpha);
@@ -158,12 +172,7 @@ void main() {
 
     float mask = smoothstep(0.75, -0.75, d) * alpha;
     col = mix(col, g, mask);
-  }
-
-  // Precise pointer dot (the droplet trails behind on a spring).
-  if (uPointer.z > 0.0) {
-    float pd = length(px - uPointer.xy);
-    col = mix(col, vec3(1.0), smoothstep(2.6 * uDpr, 1.4 * uDpr, pd) * 0.9 * uPointer.z);
+    glassCover = mask;
   }
 
   // Vignette and grain.
@@ -173,6 +182,20 @@ void main() {
   col += grain * 0.045 * (1.0 - 0.6 * dot(col, vec3(0.333)));
 
   col *= uFade;
+
+  // The title-screen text lies on top of the scene the way the HTML it stands
+  // in for did: untouched by the vignette, grain and fade, except where it is
+  // seen through glass.
+  if (uTitleAlpha > 0.0) {
+    vec4 title = texture2D(tTitle, vUv);
+    col = mix(col, title.rgb, title.a * uTitleAlpha * (1.0 - glassCover));
+  }
+
+  // Precise pointer dot (the droplet trails behind on a spring), above it all.
+  if (uPointer.z > 0.0) {
+    float pd = length(px - uPointer.xy);
+    col = mix(col, vec3(uFade), smoothstep(2.6 * uDpr, 1.4 * uDpr, pd) * 0.9 * uPointer.z);
+  }
 
   // Letterbox.
   float bar = uBar * uResolution.y;

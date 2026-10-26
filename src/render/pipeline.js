@@ -60,6 +60,8 @@ export class Pipeline {
       depthWrite: false,
       uniforms: {
         tScene: { value: null },
+        tTitle: { value: null },
+        uTitleAlpha: { value: 0 },
         uResolution: { value: new THREE.Vector2(1, 1) },
         uDpr: { value: 1 },
         uTime: { value: 0 },

@@ -325,6 +325,13 @@ button {
   transition: opacity 0.9s var(--ease);
 }
 
+/* The renderer draws the title (see ui/title.js), so the HTML glyphs are
+   hidden but keep their colour and layout for it to read. */
+.intro-title.drawn-in-gl {
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+}
+
 .state-story .intro-title,
 .ui-hidden .intro-title {
   opacity: 0;
