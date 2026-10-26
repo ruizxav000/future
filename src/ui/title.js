@@ -43,6 +43,9 @@ export class TitleLayer {
     if (this.canvas.width !== w || this.canvas.height !== h) {
       this.canvas.width = w;
       this.canvas.height = h;
+      // The GPU copy keeps its original size, so a resized canvas would be
+      // squeezed into it. Release it so it is re-created at the new size.
+      this.texture.dispose();
     }
     const ctx = this.ctx;
     ctx.clearRect(0, 0, w, h);
