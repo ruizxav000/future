@@ -37,8 +37,8 @@ export const STAGES = [
     travel: 10,
     letterbox: false,
     audio: 'swell',
-    title: 'The shadow',
-    body: 'The dark region is the black hole’s shadow. Light that comes too close crosses the event horizon and cannot escape. Gravity bends the surrounding light, so the shadow appears about 2.6 times wider than the horizon. The arc above it is light from the far side of the accretion disk, bent over the top.',
+    title: 'That darkness is its shadow.',
+    body: 'Light from everything behind it is bent around the edge. That arc over the top is the far side of the disk, lifted into view by gravity.',
   },
   {
     id: 'disk',
@@ -53,8 +53,8 @@ export const STAGES = [
     travel: 11,
     letterbox: false,
     audio: 'disk',
-    title: 'Doppler beaming',
-    body: 'Near its inner edge, gas in the accretion disk orbits at about half the speed of light. Light from the side moving toward you is shifted to higher frequencies and concentrated forward, so that side looks brighter and bluer. The receding side looks dimmer and redder. Select Cinematic to see the disk without this effect.',
+    title: 'One side burns brighter.',
+    body: 'That gas is racing toward you at over half the speed of light, so its light arrives bluer and brighter. Films usually smooth this out. Switch Doppler to Cinematic to see the version you’ve been shown.',
   },
   {
     id: 'photon',
@@ -70,8 +70,8 @@ export const STAGES = [
     travel: 14,
     letterbox: false,
     audio: 'photon',
-    title: 'The photon sphere',
-    body: 'At 1.5 times the horizon radius, light can travel in a circular orbit around the black hole. Just outside that radius, the shadow covers nearly half of the sky. Light arriving near the edge of the shadow has circled the black hole one or more times.',
+    title: 'Light can orbit here.',
+    body: 'At one and a half times the horizon, gravity bends light into a circle. Half your sky is shadow now. The stars along its edge have already looped around once.',
   },
   {
     id: 'hover',
@@ -86,8 +86,8 @@ export const STAGES = [
     travel: 16,
     letterbox: false,
     audio: 'silence',
-    title: 'Gravitational time dilation',
-    body: 'Clocks run slower deeper in a gravitational field. Hovering this close to the horizon, one hour on your clock equals seven years on Earth. Facing away from the black hole, light from the rest of the universe is compressed into a small circle and shifted to higher frequencies. Each tick marks one day on Earth.',
+    title: 'Turn around.',
+    body: 'That small circle of light is the entire universe, squeezed overhead and shifted blue. Every hour you hold here, seven years pass at home. Each tick you hear is one day.',
   },
   {
     id: 'return',
@@ -103,8 +103,8 @@ export const STAGES = [
     letterbox: false,
     audio: 'resolve',
     proceedLabel: 'Replay',
-    title: 'Two clocks',
+    title: (clock) => `You were gone ${describeDuration(clock.ship)}.`,
     body: (clock) =>
-      `Your clock recorded ${describeDuration(clock.ship)}. A clock on Earth recorded ${describeDuration(clock.earth)}. Both kept correct time. Yours ran slower because part of your trip was spent deep in the black hole’s gravity. This is the gravitational form of the twin paradox.`,
+      `At home, ${describeDuration(clock.earth)} passed. The future isn’t a place you travel to. It’s a price you pay in time.`,
   },
 ];
